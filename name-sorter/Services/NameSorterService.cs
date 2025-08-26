@@ -23,6 +23,7 @@ namespace name_sorter.Services
         }
     }
 
+    //The main Name Sort App Orchestrator
     public class NameSortProcessor(IFileService fileService, INameSorter nameSorter)
     {
         private readonly IFileService
