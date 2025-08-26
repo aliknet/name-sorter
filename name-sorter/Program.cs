@@ -29,8 +29,6 @@ namespace name_sorter
 
                 // Sort the names
                 await processor.SortNamesAsync(inputFilePath, outputFilePath, CancellationToken.None);
-
-
             }
             catch (Exception ex)
             {

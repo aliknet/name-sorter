@@ -11,23 +11,20 @@ namespace name_sorter.Services
                 throw new ArgumentException("Path cannot be null or empty", nameof(path));
 
             var trimmedPath = path.Trim();
-            
+
             if (!File.Exists(trimmedPath))
                 throw new FileNotFoundException($"File does not exist: {trimmedPath}");
 
             var fileLines = await File.ReadAllLinesAsync(trimmedPath, cancellationToken);
 
-            return fileLines.Select(line => line.Trim()).Where(trimmedLine => !string.IsNullOrEmpty(trimmedLine)).ToList();
+            return fileLines.Select(line => line.Trim()).Where(trimmedLine => !string.IsNullOrEmpty(trimmedLine))
+                .ToList();
         }
 
         public async Task WriteTextFileLinesAsync(string path, List<string> lines, CancellationToken cancellationToken)
         {
             if (string.IsNullOrWhiteSpace(path))
                 throw new ArgumentException("Path cannot be null or empty", nameof(path));
-            
-            if (lines == null)
-                throw new ArgumentNullException(nameof(lines));
-
             await File.WriteAllLinesAsync(path, lines, Encoding.UTF8, cancellationToken);
         }
     }

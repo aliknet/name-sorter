@@ -9,9 +9,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Update="unsorted-names-list.txt">
+    <None Remove="unsorted-names-list.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="unsorted-names-list.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
+    </Content>
   </ItemGroup>
 
 </Project>

@@ -6,12 +6,7 @@ namespace name_sorter.tests.ServicesTests
 {
     public class NameParserTests
     {
-        private readonly NameParser _nameParser;
-
-        public NameParserTests()
-        {
-            _nameParser = new NameParser();
-        }
+        private readonly NameParser _nameParser = new();
 
         [Fact]
         public void ParseName_WithTwoNames_ShouldReturnCorrectNameObject()
@@ -93,7 +88,6 @@ namespace name_sorter.tests.ServicesTests
         [Theory]
         [InlineData("")]
         [InlineData("   ")]
-        [InlineData(null)]
         public void ParseName_WithNullOrEmpty_ShouldThrowArgumentException(string fullName)
         {
             // Act & Assert

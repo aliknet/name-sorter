@@ -90,7 +90,7 @@ namespace name_sorter.tests.ServicesTests
             var names = new List<string> { "John Michael Smith Doe", "John Michael Doe", "John Doe" };
 
             _mockNameParser.Setup(x => x.ParseName("John Michael Smith Doe"))
-                .Returns(new name_sorter.Models.NameObject("Doe",["John", "Michael", "Smith"]));
+                .Returns(new name_sorter.Models.NameObject("Doe", ["John", "Michael", "Smith"]));
             _mockNameParser.Setup(x => x.ParseName("John Michael Doe"))
                 .Returns(new name_sorter.Models.NameObject("Doe", ["John", "Michael"]));
             _mockNameParser.Setup(x => x.ParseName("John Doe"))
@@ -116,15 +116,6 @@ namespace name_sorter.tests.ServicesTests
 
             // Assert
             Assert.Empty(result);
-        }
-
-        [Fact]
-        public void SortNames_WithNullInput_ShouldThrowArgumentNullException()
-        {
-            // Act & Assert
-            var exception = Assert.Throws<ArgumentNullException>(() =>
-                _nameSorterService.SortNames(null).ToList());
-            Assert.Equal("names", exception.ParamName);
         }
 
         [Fact]

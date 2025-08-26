@@ -16,7 +16,8 @@ namespace name_sorter.Services
             if (string.IsNullOrWhiteSpace(nameParts[0]))
                 throw new ArgumentException("Last name is required");
             if (nameParts.Length <= 1)
-                throw new ArgumentException("Given name(s) not provided, A name must have between 1 and 3 given names", fullName);
+                throw new ArgumentException("Given name(s) not provided, A name must have between 1 and 3 given names",
+                    fullName);
             if (nameParts.Length > 4)
                 throw new ArgumentException($"Given Names more than 3 for '{fullName}'", fullName);
             //Returning Name Objet

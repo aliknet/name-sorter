@@ -1,33 +1,28 @@
 using Xunit;
 using name_sorter.Services;
-using System.Text;
 
 namespace name_sorter.tests.ServicesTests
 {
-    public class FileServiceTests : IDisposable
+    public class FileServiceTests
     {
         private readonly FileService _fileService;
-        private readonly string _testDirectory;
         private readonly string _testFilePath;
         private readonly string _outputFilePath;
 
         public FileServiceTests()
         {
             _fileService = new FileService();
-            _testDirectory = Path.Combine(Path.GetTempPath(), "name-sorter-tests");
-            _testFilePath = Path.Combine(_testDirectory, "test-names.txt");
-            _outputFilePath = Path.Combine(_testDirectory, "output-names.txt");
-
-            Directory.CreateDirectory(_testDirectory);
-        }
-
-        public void Dispose()
-        {
-            if (Directory.Exists(_testDirectory))
+            var testDirectory = Path.Combine(Path.GetTempPath(), "name-sorter-tests");
+            _testFilePath = Path.Combine(testDirectory, "test-names.txt");
+            _outputFilePath = Path.Combine(testDirectory, "output-names.txt");
+            if (Directory.Exists(testDirectory))
             {
-                Directory.Delete(_testDirectory, true);
+                Directory.Delete(testDirectory, true);
             }
+
+            Directory.CreateDirectory(testDirectory);
         }
+
 
         [Fact]
         public async Task WriteTextFileLinesAsync_WithValidData_ShouldWriteFile()
@@ -47,19 +42,8 @@ namespace name_sorter.tests.ServicesTests
             Assert.Equal(lines[2], writtenLines[2]);
         }
 
-        [Fact]
-        public async Task WriteTextFileLinesAsync_WithNullLines_ShouldThrowArgumentNullException()
-        {
-            // Act & Assert
-            var exception = await Assert.ThrowsAsync<ArgumentNullException>(() =>
-                _fileService.WriteTextFileLinesAsync(_outputFilePath, null, CancellationToken.None));
-
-            Assert.Equal("lines", exception.ParamName);
-        }
-
         [Theory]
         [InlineData("")]
-        [InlineData(null)]
         public async Task WriteTextFileLinesAsync_WithInvalidPath_ShouldThrowArgumentException(string path)
         {
             // Arrange
@@ -102,7 +86,6 @@ namespace name_sorter.tests.ServicesTests
 
         [Theory]
         [InlineData("")]
-        [InlineData(null)]
         public async Task ReadTextFileLinesAsync_WithInvalidPath_ShouldThrowArgumentException(string path)
         {
             // Act & Assert

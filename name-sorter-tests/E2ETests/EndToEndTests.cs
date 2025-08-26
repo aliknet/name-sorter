@@ -2,7 +2,7 @@ using name_sorter.Services;
 
 namespace name_sorter.tests.E2ETests
 {
-    public class EndToEndTests : IDisposable
+    public class EndToEndTests
     {
         private readonly string _testDirectory;
         private readonly FileService _fileService;
@@ -13,20 +13,17 @@ namespace name_sorter.tests.E2ETests
         public EndToEndTests()
         {
             _testDirectory = Path.Combine(Path.GetTempPath(), "name-sorter-e2e-tests");
+            if (Directory.Exists(_testDirectory))
+            {
+                Directory.Delete(_testDirectory, true);
+            }
+
             Directory.CreateDirectory(_testDirectory);
 
             _fileService = new FileService();
             _nameParser = new NameParser();
             _nameSorterService = new NameSorterService(_nameParser);
             _nameSortProcessor = new NameSortProcessor(_fileService, _nameSorterService);
-        }
-
-        public void Dispose()
-        {
-            if (Directory.Exists(_testDirectory))
-            {
-                Directory.Delete(_testDirectory, true);
-            }
         }
 
         [Fact]
