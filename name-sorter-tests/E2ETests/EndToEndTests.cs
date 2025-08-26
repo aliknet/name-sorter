@@ -8,7 +8,7 @@ namespace name_sorter.tests.E2ETests
         private readonly FileService _fileService;
         private readonly NameParser _nameParser;
         private readonly NameSorterService _nameSorterService;
-        private readonly NameSortProcessor _nameSortProcessor;
+        private readonly NameSorter _nameSorter;
 
         public EndToEndTests()
         {
@@ -23,7 +23,7 @@ namespace name_sorter.tests.E2ETests
             _fileService = new FileService();
             _nameParser = new NameParser();
             _nameSorterService = new NameSorterService(_nameParser);
-            _nameSortProcessor = new NameSortProcessor(_fileService, _nameSorterService);
+            _nameSorter = new NameSorter(_fileService, _nameSorterService);
         }
 
         [Fact]
@@ -51,7 +51,7 @@ namespace name_sorter.tests.E2ETests
             await File.WriteAllLinesAsync(inputFilePath, inputNames);
 
             // Act
-            await _nameSortProcessor.SortNamesAsync(inputFilePath, outputFilePath, CancellationToken.None);
+            await _nameSorter.SortNamesAsync(inputFilePath, outputFilePath, CancellationToken.None);
 
             // Assert
             Assert.True(File.Exists(outputFilePath));
@@ -91,7 +91,7 @@ namespace name_sorter.tests.E2ETests
             await File.WriteAllTextAsync(inputFilePath, "");
 
             // Act
-            await _nameSortProcessor.SortNamesAsync(inputFilePath, outputFilePath, CancellationToken.None);
+            await _nameSorter.SortNamesAsync(inputFilePath, outputFilePath, CancellationToken.None);
 
             // Assert
             Assert.True(File.Exists(outputFilePath));
@@ -109,7 +109,7 @@ namespace name_sorter.tests.E2ETests
             await File.WriteAllTextAsync(inputFilePath, "   \n  \n  ");
 
             // Act
-            await _nameSortProcessor.SortNamesAsync(inputFilePath, outputFilePath, CancellationToken.None);
+            await _nameSorter.SortNamesAsync(inputFilePath, outputFilePath, CancellationToken.None);
 
             // Assert
             Assert.True(File.Exists(outputFilePath));
@@ -136,7 +136,7 @@ namespace name_sorter.tests.E2ETests
             await File.WriteAllLinesAsync(inputFilePath, inputNames);
 
             // Act
-            await _nameSortProcessor.SortNamesAsync(inputFilePath, outputFilePath, CancellationToken.None);
+            await _nameSorter.SortNamesAsync(inputFilePath, outputFilePath, CancellationToken.None);
 
             // Assert
             Assert.True(File.Exists(outputFilePath));
@@ -170,7 +170,7 @@ namespace name_sorter.tests.E2ETests
             await File.WriteAllLinesAsync(inputFilePath, inputNames, System.Text.Encoding.UTF8);
 
             // Act
-            await _nameSortProcessor.SortNamesAsync(inputFilePath, outputFilePath, CancellationToken.None);
+            await _nameSorter.SortNamesAsync(inputFilePath, outputFilePath, CancellationToken.None);
 
             // Assert
             Assert.True(File.Exists(outputFilePath));
@@ -199,7 +199,7 @@ namespace name_sorter.tests.E2ETests
             await File.WriteAllLinesAsync(inputFilePath, inputNames);
 
             // Act
-            await _nameSortProcessor.SortNamesAsync(inputFilePath, outputFilePath, CancellationToken.None);
+            await _nameSorter.SortNamesAsync(inputFilePath, outputFilePath, CancellationToken.None);
 
             // Assert
             Assert.True(File.Exists(outputFilePath));
@@ -231,7 +231,7 @@ namespace name_sorter.tests.E2ETests
 
             // Act & Assert
             var exception = await Assert.ThrowsAsync<ArgumentException>(() =>
-                _nameSortProcessor.SortNamesAsync(inputFilePath, outputFilePath, CancellationToken.None));
+                _nameSorter.SortNamesAsync(inputFilePath, outputFilePath, CancellationToken.None));
 
             Assert.Contains("Given name(s) not provided", exception.Message);
         }

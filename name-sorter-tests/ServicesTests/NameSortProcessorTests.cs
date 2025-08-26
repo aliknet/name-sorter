@@ -8,13 +8,13 @@ namespace name_sorter.tests.ServicesTests
     {
         private readonly Mock<IFileService> _mockFileService;
         private readonly Mock<INameSorter> _mockNameSorter;
-        private readonly NameSortProcessor _nameSortProcessor;
+        private readonly NameSorter _nameSorter;
 
         public NameSortProcessorTests()
         {
             _mockFileService = new Mock<IFileService>();
             _mockNameSorter = new Mock<INameSorter>();
-            _nameSortProcessor = new NameSortProcessor(_mockFileService.Object, _mockNameSorter.Object);
+            _nameSorter = new NameSorter(_mockFileService.Object,_mockNameSorter.Object);
             var testDirectory = Path.Combine(Path.GetTempPath(), "name-sorter-processor-tests");
             if (Directory.Exists(testDirectory))
             {
@@ -41,7 +41,7 @@ namespace name_sorter.tests.ServicesTests
                 .Returns(Task.CompletedTask);
 
             // Act
-            await _nameSortProcessor.SortNamesAsync(inputFilePath, outputFilePath, CancellationToken.None);
+            await _nameSorter.SortNamesAsync(inputFilePath, outputFilePath, CancellationToken.None);
 
             // Assert
             _mockFileService.Verify(x => x.ReadTextFileLinesAsync(inputFilePath, CancellationToken.None), Times.Once);
@@ -67,7 +67,7 @@ namespace name_sorter.tests.ServicesTests
                 .Returns(Task.CompletedTask);
 
             // Act
-            await _nameSortProcessor.SortNamesAsync(inputFilePath, outputFilePath, CancellationToken.None);
+            await _nameSorter.SortNamesAsync(inputFilePath, outputFilePath, CancellationToken.None);
 
             // Assert
             _mockFileService.Verify(x => x.ReadTextFileLinesAsync(inputFilePath, CancellationToken.None), Times.Once);
@@ -86,7 +86,7 @@ namespace name_sorter.tests.ServicesTests
 
             // Act & Assert
             var exception = await Assert.ThrowsAsync<ArgumentException>(() =>
-                _nameSortProcessor.SortNamesAsync(inputFilePath, outputFilePath, CancellationToken.None));
+                _nameSorter.SortNamesAsync(inputFilePath, outputFilePath, CancellationToken.None));
 
             Assert.Contains("Input file path cannot be null or empty", exception.Message);
         }
@@ -101,7 +101,7 @@ namespace name_sorter.tests.ServicesTests
 
             // Act & Assert
             var exception = await Assert.ThrowsAsync<ArgumentException>(() =>
-                _nameSortProcessor.SortNamesAsync(inputFilePath, outputFilePath, CancellationToken.None));
+                _nameSorter.SortNamesAsync(inputFilePath, outputFilePath, CancellationToken.None));
 
             Assert.Contains("Output file path cannot be null or empty", exception.Message);
         }
@@ -119,7 +119,7 @@ namespace name_sorter.tests.ServicesTests
 
             // Act & Assert
             var exception = await Assert.ThrowsAsync<FileNotFoundException>(() =>
-                _nameSortProcessor.SortNamesAsync(inputFilePath, outputFilePath, CancellationToken.None));
+                _nameSorter.SortNamesAsync(inputFilePath, outputFilePath, CancellationToken.None));
 
             Assert.Same(expectedException, exception);
         }
@@ -140,7 +140,7 @@ namespace name_sorter.tests.ServicesTests
 
             // Act & Assert
             var exception = await Assert.ThrowsAsync<ArgumentException>(() =>
-                _nameSortProcessor.SortNamesAsync(inputFilePath, outputFilePath, CancellationToken.None));
+                _nameSorter.SortNamesAsync(inputFilePath, outputFilePath, CancellationToken.None));
 
             Assert.Same(expectedException, exception);
         }
@@ -164,7 +164,7 @@ namespace name_sorter.tests.ServicesTests
 
             // Act & Assert
             var exception = await Assert.ThrowsAsync<UnauthorizedAccessException>(() =>
-                _nameSortProcessor.SortNamesAsync(inputFilePath, outputFilePath, CancellationToken.None));
+                _nameSorter.SortNamesAsync(inputFilePath, outputFilePath, CancellationToken.None));
 
             Assert.Same(expectedException, exception);
         }
@@ -188,7 +188,7 @@ namespace name_sorter.tests.ServicesTests
                 .Returns(Task.CompletedTask);
 
             // Act
-            await _nameSortProcessor.SortNamesAsync(inputFilePath, outputFilePath, CancellationToken.None);
+            await _nameSorter.SortNamesAsync(inputFilePath, outputFilePath, CancellationToken.None);
 
             // Assert
             _mockFileService.Verify(x => x.ReadTextFileLinesAsync(inputFilePath, CancellationToken.None), Times.Once);
@@ -214,7 +214,7 @@ namespace name_sorter.tests.ServicesTests
                 .Returns(Task.CompletedTask);
 
             // Act
-            await _nameSortProcessor.SortNamesAsync(inputFilePath, outputFilePath, CancellationToken.None);
+            await _nameSorter.SortNamesAsync(inputFilePath, outputFilePath, CancellationToken.None);
 
             // Assert
             _mockFileService.Verify(x => x.ReadTextFileLinesAsync(inputFilePath, CancellationToken.None), Times.Once);

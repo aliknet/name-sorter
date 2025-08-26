@@ -22,43 +22,4 @@ namespace name_sorter.Services
                 .Select(nObj => nObj.FullName);
         }
     }
-
-    //The main Name Sort App Orchestrator
-    public class NameSortProcessor(IFileService fileService, INameSorter nameSorter)
-    {
-        private readonly IFileService
-            _fileService = fileService ?? throw new ArgumentNullException(nameof(fileService));
-
-        private readonly INameSorter _nameSorter = nameSorter ?? throw new ArgumentNullException(nameof(nameSorter));
-
-        public async Task SortNamesAsync(string inputFilePath, string outputFilePath,
-            CancellationToken cancellationToken)
-        {
-            if (string.IsNullOrWhiteSpace(inputFilePath))
-                throw new ArgumentException("Input file path cannot be null or empty", nameof(inputFilePath));
-
-            if (string.IsNullOrWhiteSpace(outputFilePath))
-                throw new ArgumentException("Output file path cannot be null or empty", nameof(outputFilePath));
-
-            try
-            {
-                // Read names from input file
-                var names = await _fileService.ReadTextFileLinesAsync(inputFilePath, cancellationToken);
-
-                // Sort names
-                var sortedNames = _nameSorter.SortNames(names).ToList();
-
-                // Write sorted names to output file
-                await _fileService.WriteTextFileLinesAsync(outputFilePath, sortedNames, cancellationToken);
-
-                Console.WriteLine(
-                    $"Successfully processed {names.Count} names. Sorted names written to: {outputFilePath}");
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error processing names: {ex.Message}");
-                throw;
-            }
-        }
-    }
 }

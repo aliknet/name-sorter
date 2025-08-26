@@ -1,4 +1,5 @@
-﻿using name_sorter.Services;
+﻿using Microsoft.Extensions.DependencyInjection;
+using name_sorter.Services;
 using name_sorter.Interfaces;
 
 namespace name_sorter
@@ -7,34 +8,30 @@ namespace name_sorter
     {
         private static async Task Main(string[] args)
         {
+            var serviceProvider = ConfigureServices();
             try
             {
-                //Checking Argument input - input file Path is received as an argument
-                if (args.Length <= 0)
-                {
-                    Console.WriteLine("ERROR: no Argument(Input File Path) Provided");
-                    Console.WriteLine("Usage: name-sorter <input file path>");
-                    return;
-                }
-
-                var inputFilePath = args[0];
-                //Default Output Path
-                const string outputFilePath = "sorted-names-list.txt";
-
-                // Dependency injections
-                IFileService fileService = new FileService();
-                INameParser nameParser = new NameParser();
-                INameSorter nameSorter = new NameSorterService(nameParser);
-                var processor = new NameSortProcessor(fileService, nameSorter);
-
-                // Sort the names
-                await processor.SortNamesAsync(inputFilePath, outputFilePath, CancellationToken.None);
+                var app = serviceProvider.GetRequiredService<NameSorter>();
+                await app.Run(args);
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Application error: {ex.Message}");
-                Environment.Exit(1);
+                await Console.Error.WriteLineAsync($"An error occurred: {ex.Message}");
             }
+        }
+
+        private static ServiceProvider ConfigureServices()
+        {
+            var services = new ServiceCollection();
+
+            // core services
+            services.AddSingleton<IFileService, FileService>();
+            services.AddSingleton<INameParser, NameParser>();
+            services.AddSingleton<INameSorter, NameSorterService>();
+
+            // entrypoint
+            services.AddSingleton<NameSorter>();
+            return services.BuildServiceProvider();
         }
     }
 }
