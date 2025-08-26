@@ -7,7 +7,7 @@ A sample file named unsorted-names-list.txt is provided.
 
 The solution includes 2 Projects:
 - name-sorter : The Main sorter application
-- name-sorter-tests : The Tests Project using xUnit and Moq
+- name-sorter.tests : The Tests Project using xUnit and Moq
 
 # Input
 A file listing all names, one name per line
@@ -23,4 +23,4 @@ dotnet build
 dotnet test
 
 ## Usage
-dotnet run --project name-sorter ./unsorted-names-list.txt
+dotnet run --project name-sorter unsorted-names-list.txt

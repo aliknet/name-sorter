@@ -23,4 +23,4 @@ dotnet build
 dotnet test
 
 ## Usage
-dotnet run --project name-sorter ./unsorted-names-list.txt
+dotnet run --project name-sorter unsorted-names-list.txt
